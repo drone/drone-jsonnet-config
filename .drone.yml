@@ -36,6 +36,25 @@ steps:
       $secret: username
 
 ---
+kind: pipeline
+name: manifest
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: upload
+  image: plugins/manifest
+  settings:
+    auto_tag: true
+    ignore_missing: true
+    spec: docker/manifest.tmpl
+
+depends_on:
+- amd64
+
+---
 kind: secret
 type: external
 data:

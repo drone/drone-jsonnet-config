@@ -8,7 +8,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	"net/url"
 	"testing"
 
 	"github.com/drone/drone-go/drone"
@@ -24,8 +23,11 @@ func TestImport(t *testing.T) {
 	}))
 	defer ts.Close()
 
-	client := github.NewClient(nil)
-	client.BaseURL, _ = url.Parse(ts.URL)
+	client, err := github.NewEnterpriseClient(ts.URL, ts.URL, nil)
+	if err != nil {
+		t.Error(err)
+		return
+	}
 
 	vm := jsonnet.MakeVM()
 	vm.Importer(

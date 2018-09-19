@@ -5,6 +5,7 @@
 package plugin
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"path"
@@ -72,7 +73,7 @@ func (i *importer) Import(importedFrom, importedPath string) (contents jsonnet.C
 	// get the configuration file from the github repository
 	// for the build ref.
 	opts := &github.RepositoryContentGetOptions{Ref: i.build.After}
-	data, _, _, err := i.client.Repositories.GetContents(i.repo.Namespace, i.repo.Name, importedPath, opts)
+	data, _, _, err := i.client.Repositories.GetContents(context.Background(), i.repo.Namespace, i.repo.Name, importedPath, opts)
 	if err != nil {
 		return contents, foundAt, err
 	}

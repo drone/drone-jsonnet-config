@@ -7,8 +7,6 @@ package plugin
 import (
 	"bytes"
 	"context"
-	"net/url"
-	"strings"
 
 	"github.com/drone/drone-go/drone"
 	"github.com/drone/drone-go/plugin/config"
@@ -20,10 +18,6 @@ import (
 
 // New returns a new jsonnet configuration plugin.
 func New(server, token string) config.Plugin {
-	if server != "" {
-		server = strings.TrimPrefix(server, "/")
-		server = server + "/"
-	}
 	return &plugin{
 		server: server,
 		token:  token,
@@ -50,14 +44,11 @@ func (p *plugin) Find(ctx context.Context, req *config.Request) (*drone.Config, 
 	if p.server == "" {
 		client = github.NewClient(trans)
 	} else {
-		url, err := url.Parse(p.server)
+		var err error
+		client, err = github.NewEnterpriseClient(p.server, p.server, trans)
 		if err != nil {
 			return nil, err
 		}
-		// TODO(bradrydzewski) upgrade go-github and use
-		// github.NewEnterpriseClient
-		client = github.NewClient(trans)
-		client.BaseURL = url
 	}
 
 	// HACK: the drone-go library does not currently work
@@ -72,7 +63,7 @@ func (p *plugin) Find(ctx context.Context, req *config.Request) (*drone.Config, 
 	// get the configuration file from the github repository
 	// for the build ref.
 	opts := &github.RepositoryContentGetOptions{Ref: req.Build.After}
-	data, _, _, err := client.Repositories.GetContents(req.Repo.Namespace, req.Repo.Name, path, opts)
+	data, _, _, err := client.Repositories.GetContents(ctx, req.Repo.Namespace, req.Repo.Name, path, opts)
 	if err != nil {
 		return nil, err
 	}

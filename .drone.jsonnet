@@ -48,7 +48,7 @@ local manifest = {
             name: "upload",
             image: "plugins/manifest",
             settings: {
-                spec: "manifest.tmpl",
+                spec: "docker/manifest.tmpl",
                 auto_tag: true,
                 ignore_missing: true,
             },
@@ -56,8 +56,6 @@ local manifest = {
     ],
     depends_on: [
         "amd64",
-        "arm64",
-        "arm"
     ],
 };
 
@@ -72,8 +70,6 @@ local secrets = {
 
 [
   pipeline("amd64", "linux", "amd64"),
-  #pipeline("arm64", "linux", "arm64"),
-  #pipeline("arm", "linux", "arm"),
-  #manifest,
+  manifest,
   secrets,
 ]
