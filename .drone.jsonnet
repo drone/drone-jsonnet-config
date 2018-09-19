@@ -51,6 +51,8 @@ local manifest = {
                 spec: "docker/manifest.tmpl",
                 auto_tag: true,
                 ignore_missing: true,
+                username: { "$secret": "username" },
+                password: { "$secret": "password" },
             },
         },
     ],

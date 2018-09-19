@@ -49,7 +49,11 @@ steps:
   settings:
     auto_tag: true
     ignore_missing: true
+    password:
+      $secret: password
     spec: docker/manifest.tmpl
+    username:
+      $secret: username
 
 depends_on:
 - amd64
