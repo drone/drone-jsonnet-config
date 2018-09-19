@@ -6,16 +6,20 @@ platform:
   os: linux
   arch: amd64
 
+workspace:
+  base: /go
+  path: src/github.com/drone/drone-jsonnet-config
+
 steps:
 - name: build
-  image: golang
+  image: golang:1.11
   commands:
   - go get -u github.com/golang/dep/cmd/dep
   - dep ensure
   - go test ./...
   - go build -o release/linux/amd64/drone-jsonnet-config github.com/drone/drone-jsonnet-config/cmd/drone-jsonnet-config
   environment:
-    CGO_ENABLED: '0'
+    CGO_ENABLED: 0
     GOARCH: amd64
     GOOS: linux
 

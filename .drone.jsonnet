@@ -5,10 +5,14 @@ local pipeline(name, os, arch) = {
         os: os,
         arch: arch,
     },
+    workspace: {
+        base: "/go",
+        path: "src/github.com/drone/drone-jsonnet-config",
+    },
     steps: [
         {
             name: "build",
-            image: "golang",
+            image: "golang:1.11",
             environment: {
                 "GOOS": os,
                 "GOARCH": arch,
