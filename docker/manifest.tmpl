@@ -1,13 +1,7 @@
-image: drone/drone-jsonnet:{{#if build.tag}}{{trimPrefix build.tag "v"}}{{else}}latest{{/if}}
-{{#if build.tags}}
-tags:
-{{#each build.tags}}
-  - {{this}}
-{{/each}}
-{{/if}}
+image: drone/drone-jsonnet:latest
 manifests:
   -
-    image: drone/drone-jsonnet:{{#if build.tag}}{{trimPrefix build.tag "v"}}-{{/if}}linux-amd64
+    image: drone/drone-jsonnet:linux-amd64
     platform:
       architecture: amd64
       os: linux

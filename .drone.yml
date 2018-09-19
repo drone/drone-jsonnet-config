@@ -55,6 +55,10 @@ steps:
     username:
       $secret: username
 
+trigger:
+  event:
+  - push
+
 depends_on:
 - amd64
 
