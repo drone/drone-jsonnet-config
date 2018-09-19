@@ -46,7 +46,7 @@ local manifest = {
   steps: [
     {
       name: "upload",
-      image: "plugins/manifest",
+      image: "plugins/manifest:1",
       settings: {
         spec: "docker/manifest.tmpl",
         auto_tag: true,
@@ -59,6 +59,7 @@ local manifest = {
   trigger: {
     event: [
       "push",
+      "tag",
     ],
   },
   depends_on: [

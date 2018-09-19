@@ -45,7 +45,7 @@ platform:
 
 steps:
 - name: upload
-  image: plugins/manifest
+  image: plugins/manifest:1
   settings:
     auto_tag: true
     ignore_missing: true
@@ -58,6 +58,7 @@ steps:
 trigger:
   event:
   - push
+  - tag
 
 depends_on:
 - amd64
