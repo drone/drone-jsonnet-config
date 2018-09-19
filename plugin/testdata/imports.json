@@ -1,0 +1,18 @@
+{
+  "type": "file",
+  "encoding": "base64",
+  "size": 5362,
+  "name": ".drone.jsonnet",
+  "path": ".drone.jsonnet",
+  "content": "CmxvY2FsIHBpcGVsaW5lID0gewogIGtpbmQ6ICJwaXBlbGluZSIsCiAgbmFtZTogImRlZmF1bHQiLAp9OwoKW3BpcGVsaW5lXQo=",
+  "sha": "3d21ec53a331a6f037a91c368710b99387d012c1",
+  "url": "https://api.github.com/repos/octocat/hello-world/contents/.drone.jsonnet",
+  "git_url": "https://api.github.com/repos/octocat/hello-world/git/blobs/3d21ec53a331a6f037a91c368710b99387d012c1",
+  "html_url": "https://github.com/octocat/hello-world/blob/master/.drone.jsonnet",
+  "download_url": "https://raw.githubusercontent.com/octocat/hello-world/master/.drone.jsonnet",
+  "_links": {
+    "git": "https://api.github.com/repos/octocat/hello-world/git/blobs/3d21ec53a331a6f037a91c368710b99387d012c1",
+    "self": "https://api.github.com/repos/octocat/hello-world/contents/.drone.jsonnet",
+    "html": "https://github.com/octocat/hello-world/blob/master/.drone.jsonnet"
+  }
+}

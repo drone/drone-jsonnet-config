@@ -12,10 +12,10 @@ import (
 
 	"github.com/drone/drone-go/drone"
 	"github.com/drone/drone-go/plugin/config"
-	"golang.org/x/oauth2"
 
 	"github.com/google/go-github/github"
-	jsonnet "github.com/google/go-jsonnet"
+	"github.com/google/go-jsonnet"
+	"golang.org/x/oauth2"
 )
 
 // New returns a new jsonnet configuration plugin.
@@ -54,13 +54,10 @@ func (p *plugin) Find(ctx context.Context, req *config.Request) (*drone.Config, 
 		if err != nil {
 			return nil, err
 		}
+		// TODO(bradrydzewski) upgrade go-github and use
+		// github.NewEnterpriseClient
 		client = github.NewClient(trans)
 		client.BaseURL = url
-		// var err error
-		// client, err = github.NewEnterpriseClient(p.server, p.server, trans)
-		// if err != nil {
-		// 	return nil, err
-		// }
 	}
 
 	// HACK: the drone-go library does not currently work
@@ -98,6 +95,14 @@ func (p *plugin) Find(ctx context.Context, req *config.Request) (*drone.Config, 
 	vm.MaxStack = 500
 	vm.StringOutput = false
 	vm.ErrorFormatter.SetMaxStackTraceSize(20)
+	vm.Importer(
+		&importer{
+			client: client,
+			repo:   req.Repo,
+			build:  req.Build,
+			limit:  10,
+		},
+	)
 
 	// convert the jsonnet file to yaml
 	buf := new(bytes.Buffer)
