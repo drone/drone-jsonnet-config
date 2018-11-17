@@ -7,6 +7,7 @@ package plugin
 import (
 	"bytes"
 	"context"
+	"strings"
 
 	"github.com/drone/drone-go/drone"
 	"github.com/drone/drone-go/plugin/config"
@@ -58,6 +59,11 @@ func (p *plugin) Find(ctx context.Context, req *config.Request) (*drone.Config, 
 	path := req.Repo.Config
 	if path == "" {
 		path = ".drone.jsonnet"
+	}
+
+	// https://discourse.drone.io/t/can-we-make-jsonnet-extensions-enabled-or-disabled-per-repositories/2998/2
+	if !strings.HasSuffix(path, ".jsonnet") {
+		return nil, nil
 	}
 
 	// get the configuration file from the github repository
