@@ -52,24 +52,15 @@ func (p *plugin) Find(ctx context.Context, req *config.Request) (*drone.Config, 
 		}
 	}
 
-	// HACK: the drone-go library does not currently work
-	// with 0.9 which means the configuration file path is
-	// always empty. default to .drone.yml. This can be
-	// removed as soon as drone-go is fully updated for 0.9.
-	path := req.Repo.Config
-	if path == "" {
-		path = ".drone.jsonnet"
-	}
-
 	// https://discourse.drone.io/t/can-we-make-jsonnet-extensions-enabled-or-disabled-per-repositories/2998/2
-	if !strings.HasSuffix(path, ".jsonnet") {
+	if !strings.HasSuffix(req.Repo.Config, ".jsonnet") {
 		return nil, nil
 	}
 
 	// get the configuration file from the github repository
 	// for the build ref.
 	opts := &github.RepositoryContentGetOptions{Ref: req.Build.After}
-	data, _, _, err := client.Repositories.GetContents(ctx, req.Repo.Namespace, req.Repo.Name, path, opts)
+	data, _, _, err := client.Repositories.GetContents(ctx, req.Repo.Namespace, req.Repo.Name, req.Repo.Config, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +94,7 @@ func (p *plugin) Find(ctx context.Context, req *config.Request) (*drone.Config, 
 
 	// convert the jsonnet file to yaml
 	buf := new(bytes.Buffer)
-	docs, err := vm.EvaluateSnippetStream(path, content)
+	docs, err := vm.EvaluateSnippetStream(req.Repo.Config, content)
 	if err != nil {
 		return nil, err
 	}
