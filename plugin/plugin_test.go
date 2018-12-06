@@ -33,14 +33,31 @@ func TestPlugin(t *testing.T) {
 			After: "3d21ec53a331a6f037a91c368710b99387d012c1",
 		},
 		Repo: drone.Repo{
-			Slug: "octocat/hello-world",
+			Slug:   "octocat/hello-world",
+			Config: ".drone.yml",
 		},
 	}
 
 	plugin := New(ts.URL, mockToken)
+
 	config, err := plugin.Find(noContext, req)
 	if err != nil {
 		t.Error(err)
+		return
+	}
+	if config != nil {
+		t.Error("if Repo.Config is not jsonnet, returns nil")
+		return
+	}
+
+	req.Repo.Config = ".drone.jsonnet"
+	config, err = plugin.Find(noContext, req)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	if config == nil {
+		t.Error("config is nil")
 		return
 	}
 
