@@ -1,1 +1,3 @@
-Drone extension to support Jsonnet as the configuration language.
+__Deprecation Notice__
+
+Jsonnet support is natively available in Drone; use of this extension is no longer required.  See https://docs.drone.io/server/reference/drone-jsonnet-enabled/
